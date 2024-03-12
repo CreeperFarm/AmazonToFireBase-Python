@@ -13,12 +13,12 @@ def get_manga_info(url):
     more_info.click()
 
     # Récupérer le titre du manga
-    manga_title = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/section/div[2]/div/div[10]/div[2]")
+    manga_title = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/section/div[2]/div/div[10]/div[2]")
     manga_title = manga_title.text
     print(manga_title)
 
     # Récupérer le numéro du tome du manga
-    tome_number_unsplit = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/section/div[2]/div/div[11]/div[2]")
+    tome_number_unsplit = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/section/div[2]/div/div[11]/div[2]")
     tome_number_unsplit = tome_number_unsplit.text
     tome_number = tome_number_unsplit.split(" ")
     if (tome_number_unsplit == tome_number[0]):
@@ -28,7 +28,7 @@ def get_manga_info(url):
     print(tome_number)
 
     # Récupérer le type d'édition du manga
-    type_edition = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/div[1]/div/h1")
+    type_edition = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/div[1]/div/h1")
     type_edition = type_edition.text.replace(manga_title + " ", "")
     type_edition = type_edition.replace(" tome " + tome_number, "")
 
@@ -85,7 +85,7 @@ def get_manga_info(url):
 
     # Récupérer l'auteur du manga
     try:
-        author_name = driver.find_element(By.XPATH, "/html[1]/body[1]/div[2]/main[1]/div[2]/div[1]/div[2]/section[1]/div[1]/div[1]/div[1]/div[2]/p[1]/a[1]")
+        author_name = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/div[1]/div/div[2]/p/a")
         author_name = author_name.text.replace("\u014d", '0254')
         print(author_name)
         author_name = author_name.replace("0254", "ō")
@@ -100,19 +100,31 @@ def get_manga_info(url):
             print(author_name)
 
     try:
-        author_name2 = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/div[1]/div/div[2]/p/a[2]")
+        author_name2 = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/div[1]/div/div[2]/p/a[2]")
         print(author_name2.text)
     except Exception:
         author_name2 = ""
         print("Pas d'auteur 2")
 
     # Récupérer le prix du manga
-    price = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[2]/div/div[1]/div[1]/div[2]/div/span[2]/span")
-    price = price.text
-    print(price)
+    try:
+        price = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[2]/div/div[1]/div[1]/div[2]/div/span[2]/span")
+        price = price.text
+        print(price)
+    except Exception:
+        try:
+            price = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[2]/div/div[1]/div[1]/div[2]/div/span[2]/span")
+            price = price.text
+            print(price)
+        except Exception:
+            price = "Prix inconnu"
+            print(price)
 
     # Récupérer la disponibilité du manga
-    available = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[2]/div/div[2]/div[2]/div[2]/div[1]/span[1]")
+    try:
+        available = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[2]/div/div[2]/div[2]/div[2]/div[1]/span[1]")
+    except Exception:
+        available = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[2]/div/div[2]/div[2]/div[2]/div[1]/span[1]")
     available = available.text.split(" ")
     try:
         if available[0] == "Pré-commande":
@@ -124,7 +136,7 @@ def get_manga_info(url):
     print(available)
 
     # Récupérer la date de sortie du manga
-    release_date = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/div[1]/div/div[4]/div/div[1]/span")
+    release_date = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/section/div[2]/div/div[12]/div[2]")
     release_date = release_date.text  # .replace("Date de parution : ", "")
     release_date = release_date.split(" ")
 
@@ -158,7 +170,7 @@ def get_manga_info(url):
 
     # Récupérer le genre du manga
     try:
-        type_manga = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/section/div[2]/div/div[3]/div[2]/a")
+        type_manga = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/section/div[2]/div/div[3]/div[2]/a")
         type_manga = type_manga.text  # .replace("Genre : ", "")
         print(type_manga)
         type_manga = type_manga.split(" ")
@@ -181,11 +193,11 @@ def get_manga_info(url):
 
     # Récupérer le résumé du manga
     try:
-        resume = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/div[1]/div/div[5]/div/div/div[1]/div")
+        resume = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/div[1]/div/div[5]/div/div/div[1]/div")
         resume = resume.text
     except Exception:
         try:
-            resume = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/div[1]/div/div[5]/div/div/div[1]/div")
+            resume = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/div[1]/div/div[5]/div/div/div[1]/div")
             resume = resume.text
         except Exception:
             resume = "Pas de résumé"
@@ -206,22 +218,22 @@ def get_manga_info(url):
     """
 
     # Récupérer l'éditeur du manga
-    editor = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/section/div[2]/div/div[4]/div[2]/a")
+    editor = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/section/div[2]/div/div[4]/div[2]/a")
     editor = editor.text
     print(editor)
 
     # Récupérer le nombre de pages du manga
-    page_number = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/section/div[2]/div/div[8]/div[2]")
+    page_number = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/section/div[2]/div/div[8]/div[2]")
     page_number = page_number.text  # .replace("Nombre de pages : ", "")
     print(page_number)
 
     # Récupérer l'ean du manga
-    ean = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/section/div[2]/div/div[1]/div[2]")
+    ean = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/section/div[2]/div/div[1]/div[2]")
     ean = ean.text  # .replace("Référence : ", "")
     print(ean)
 
     # Récupérer le lien de l'image du manga
-    img = driver.find_element(By.XPATH, "/html/body/div[2]/main/div[2]/div/div[2]/section[1]/div[1]/div[1]/div/div[1]/div/div[2]/div[1]/picture[1]/source[2]")
+    img = driver.find_element(By.XPATH, "/html/body/div[1]/main/div[2]/div/div/section[1]/div[1]/div[1]/div/div[1]/div/div[2]/div[1]/img[1]")
     img = img.get_attribute("srcset")
     print(img)
 
@@ -229,7 +241,7 @@ def get_manga_info(url):
     driver.quit()
 
     # Récupérer les données dans le fichier json
-    with open('py/data_scrap.json', encoding='utf-8') as json_file:
+    with open('data_scrap.json', encoding='utf-8') as json_file:
         dicts = json.load(json_file)
 
     # Création de la liste du nouveau manga
@@ -250,18 +262,18 @@ def get_manga_info(url):
     }
     # Ajouter la liste du nouveau manga dans le fichier json
     dicts.append(new_data)
-    with open('py/data_scrap.json', "w") as data_scrap:
+    with open('data_scrap.json', "w") as data_scrap:
         json.dump(dicts, data_scrap, indent=4, sort_keys=True)
 
     # Lecture de toute les données du fichier json
-    with open('py/data_scrap.json', "r") as data_scrap:
+    with open('data_scrap.json', "r") as data_scrap:
         data = json.load(data_scrap)
 
 # Commande de debug
 # get_manga_info("https://www.bdfugue.com/demon-slayer-tome-1")
 
 # Récupérer les urls des mangas
-with open('py/url_ok.json', 'r', encoding='utf-8') as urls:
+with open('url_ok.json', 'r', encoding='utf-8') as urls:
     url_from_file = json.load(urls)
     for i in url_from_file:
         url = i['url']
